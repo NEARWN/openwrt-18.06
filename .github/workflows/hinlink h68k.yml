@@ -55,13 +55,17 @@ jobs:
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
-        echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
+        echo  > ./feeds.conf.default
+        echo "src-git packages https://github.com/coolsnowwolf/packages" >> ./feeds.conf.default
+        echo "src-git luci https://github.com/coolsnowwolf/luci" >> ./feeds.conf.default
+        echo "src-git routing https://github.com/coolsnowwolf/routing" >> ./feeds.conf.default
+        echo "src-git telephony https://github.com/openwrt/telephony.git;openwrt-23.05" >> ./feeds.conf.default
+        echo "src-git helloworld https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
         
     - name: Update & Install feeds
       working-directory: ./openwrt
       run: |
         ./scripts/feeds update -a
-        ./scripts/feeds install -a
         ./scripts/feeds install -a 
         
     #- name: Import external feeds - music
