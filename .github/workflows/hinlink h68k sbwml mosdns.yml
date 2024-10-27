@@ -55,25 +55,27 @@ jobs:
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
-        echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
+        echo  > ./feeds.conf.default
+        echo "src-git packages https://github.com/coolsnowwolf/packages" >> ./feeds.conf.default
+        echo "src-git luci https://github.com/coolsnowwolf/luci" >> ./feeds.conf.default
+        echo "src-git routing https://github.com/coolsnowwolf/routing" >> ./feeds.conf.default
+        echo "src-git telephony https://github.com/openwrt/telephony.git;openwrt-23.05" >> ./feeds.conf.default
+        echo "src-git helloworld https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
         
     - name: Update & Install feeds
       working-directory: ./openwrt
       run: |
         ./scripts/feeds update -a
-        ./scripts/feeds install -a
         ./scripts/feeds install -a 
          
     - name: Import external feeds
       working-directory: ./openwrt
       run: |
-        rm -rf feeds/packages/lang/golang
-        git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
         rm -rf feeds/luci/applications/luci-app-mosdns
         rm -rf feeds/packages/net/v2ray-geodata
         find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
         find ./ | grep Makefile | grep mosdns | xargs rm -f
-        git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+        git clone https://github.com/sbwml/luci-app-mosdns -b v5-lua package/mosdns
         git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata   
     #    git clone "your_github_link" package/"your_folder_name"    
 
